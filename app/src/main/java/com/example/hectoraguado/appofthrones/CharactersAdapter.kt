@@ -1,10 +1,12 @@
 package com.example.hectoraguado.appofthrones
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlinx.android.synthetic.main.item_character.view.*
 
 class CharactersAdapter: RecyclerView.Adapter<CharactersAdapter.CharacterViewHolder> {
 
@@ -49,7 +51,12 @@ class CharactersAdapter: RecyclerView.Adapter<CharactersAdapter.CharacterViewHol
     inner class CharacterViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         var character: Character? = null
             set(value) {
-                itemView.findViewById<TextView>(R.id.label_name).text = value?.name
+                value?.let {
+                    itemView.label_name.text = value.name
+                    itemView.label_title.text = value.title
+                    val overlayColor = House.getOverlayColor(value.house.name)
+                    itemView.img_overlay.background =ContextCompat.getDrawable(itemView.context, overlayColor)
+                }
                 field = value
             }
         init {
@@ -62,3 +69,19 @@ class CharactersAdapter: RecyclerView.Adapter<CharactersAdapter.CharacterViewHol
     }
 
 }
+
+// clase anidada
+//inner class CharacterViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+//    var character: Character? = null
+//        set(value) {
+//            itemView.findViewById<TextView>(R.id.label_name).text = value?.name
+//            field = value
+//        }
+//    init {
+//        itemView.setOnClickListener {
+//            character?.let {
+//                itemClickListener?.invoke(character as Character, position )
+//            }
+//        }
+//    }
+//}

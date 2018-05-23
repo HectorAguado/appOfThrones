@@ -12,14 +12,15 @@ class CharacterActivity: AppCompatActivity(), CharactersFragment.OnItemClickList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_characters)
 
-
-        val fragment = CharactersFragment()
         // Iniciar transacción
-        if (savedInstanceState == null) // primera vez q se crea
-        this.supportFragmentManager
-                .beginTransaction()
-                .add(R.id.list_container, fragment)
-                .commit()
+        if (savedInstanceState == null) { // primera vez q se crea
+            val fragment = CharactersFragment()
+
+            this.supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.list_container, fragment)
+                    .commit()
+        }
     }
 
     override fun onItemClicked(character: Character) {
