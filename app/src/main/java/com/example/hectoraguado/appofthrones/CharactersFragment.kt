@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import kotlinx.android.synthetic.main.fragment_characters.*
 
 class CharactersFragment : Fragment() {
 
@@ -45,18 +46,52 @@ class CharactersFragment : Fragment() {
     // Se ejecuta cuando la vista ya esta inflada y accesible el UI
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var characters: MutableList<Character> = CharactersRepo.characters
-        adapter.setCharacters(characters)
+//        var characters: MutableList<Character> = CharactersRepo.characters
+//        adapter.setCharacters(characters)
 
+//        requestCharacters()
         list.adapter = adapter
+
+        btnRetry.setOnClickListener {
+            retry()
+        }
     }
 
-    fun showDetails(characterId: String){
-        val intent: Intent = Intent(context, DetailActivity::class.java)
-        intent.putExtra("key_id", characterId)
-
-        startActivity(intent)
+    private fun retry(){
+        layoutError.visibility = View.INVISIBLE
+        progressBar.visibility = View.VISIBLE
+        requestCharacters()
     }
+
+    override fun onResume() {
+        super.onResume()
+        requestCharacters()
+    }
+    private fun requestCharacters(){
+        CharactersRepo.requestCharacters(
+                context,
+                { characters ->
+                    view?.let {
+                        progressBar.visibility = View.INVISIBLE
+                        list.visibility = View.VISIBLE
+                        adapter.setCharacters(characters)
+                    }
+                },
+                {
+                    view?.let {
+                        progressBar.visibility = View.INVISIBLE
+                        layoutError.visibility = View.VISIBLE
+                    }
+                })
+    }
+
+//    fun showDetails(characterId: String){
+//        val intent: Intent = Intent(context, DetailActivity::class.java)
+//        intent.putExtra("key_id", characterId)
+//
+//        startActivity(intent)
+//    }
+
 
     interface OnItemClickListener {
         fun onItemClicked(character: Character)

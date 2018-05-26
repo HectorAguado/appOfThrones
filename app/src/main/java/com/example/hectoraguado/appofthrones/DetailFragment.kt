@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.data_character.*
 import kotlinx.android.synthetic.main.header_character.*
+import kotlinx.android.synthetic.main.item_character.view.*
 
 
 class DetailFragment : Fragment() {
@@ -51,6 +53,13 @@ class DetailFragment : Fragment() {
                 val overlayColor = House.getOverlayColor(houseName)
                 view_overlay.background = ContextCompat.getDrawable(context, overlayColor)
 
+                Picasso.get()
+                        .load(character.img)
+                        .placeholder(R.drawable.test)
+                        .into(img_character)
+
+                btnHouse.text = houseName
+
 //                val baseColor = House.getBaseColor(houseName)
 //                btnHouse.backgroundTintList = ContextCompat.getColorStateList(context, baseColor)
 //
@@ -59,9 +68,14 @@ class DetailFragment : Fragment() {
 //                btnHouse.setImageDrawable(drawable)
             }
         }
-//        btnHouse.setOnClickListener {
-//            Toast.makeText(context, character?.house?.name, Toast.LENGTH_SHORT).show()
-//        }
+        btnHouse.setOnClickListener {
+            if (character != null) {
+                showDialog(character.house)            }
+        }
+    }
+    private fun showDialog(house: House){
+        val dialog = HouseDialog.newInstance(house)
+        dialog.show(childFragmentManager, "house_dialog")
     }
 
 }

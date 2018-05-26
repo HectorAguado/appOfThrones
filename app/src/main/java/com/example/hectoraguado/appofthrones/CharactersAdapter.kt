@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_character.view.*
 
 class CharactersAdapter: RecyclerView.Adapter<CharactersAdapter.CharacterViewHolder> {
@@ -56,6 +56,11 @@ class CharactersAdapter: RecyclerView.Adapter<CharactersAdapter.CharacterViewHol
                     itemView.label_title.text = value.title
                     val overlayColor = House.getOverlayColor(value.house.name)
                     itemView.img_overlay.background =ContextCompat.getDrawable(itemView.context, overlayColor)
+
+                    Picasso.get()
+                            .load(value.img)
+                            .placeholder(R.drawable.test)
+                            .into(itemView.item_img_character)
                 }
                 field = value
             }

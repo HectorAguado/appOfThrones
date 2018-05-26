@@ -1,5 +1,6 @@
 package com.example.hectoraguado.appofthrones
 
+import java.io.Serializable
 import java.util.*
 
 data class Character(
@@ -12,13 +13,15 @@ data class Character(
         var father: String,
         var mother: String,
         var spouse: String,
+        var img: String,
         var house: House
 )
 
 data class House(
         var name: String,
         var region: String,
-        var words: String){
+        var img: String,
+        var words: String) : Serializable{
 
     companion object {
         private val DEFAULT_PALLETE = arrayOf(R.color.starkOverlay, R.color.starkBase, R.drawable.ic_stark)
@@ -37,7 +40,8 @@ data class House(
         )
 
         fun getOverlayColor(houseId: String): Int{
-            val palette: Array<Int> = resources.getOrDefault(houseId, DEFAULT_PALLETE)
+//            val palette: Array<Int> = resources.getOrDefault(houseId, DEFAULT_PALLETE)
+            var palette = resources.getOrDefault(houseId, DEFAULT_PALLETE)
             return palette[0]
         }
         fun getBaseColor(houseId: String): Int{
